@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function candbyars()
+    {
+        return $this->hasMany(Candybar::class);
+    }
 }

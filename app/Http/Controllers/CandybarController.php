@@ -66,7 +66,7 @@ class CandybarController extends Controller
 
         if($candyBarDeleted) {
             LogCandybarDeletionJob::dispatch(auth()->user(), $candybarName);
-            return json_encode("Candybar {$candybar->name} was successfully deleted");
+            return json_encode("Candybar {$candybarName} was successfully deleted");
         }
 
         return json_encode('Something went wrong');

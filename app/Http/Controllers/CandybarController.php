@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Exceptions\CandybarAlreadyExistsException;
 use App\Http\Requests\StoreCandybarRequest;
 use App\Http\Requests\UpdateCandybarRequest;
+use App\Jobs\LogCandybarDeletionJob;
 use App\Models\Candybar;
-use Illuminate\Session\Store;
 
 class CandybarController extends Controller
 {
@@ -60,9 +60,15 @@ class CandybarController extends Controller
      */
     public function destroy(string $id)
     {
-        $candybarName = Candybar::where('id', $id)->first()->name;
-        Candybar::where('id', $id)->first()->delete();
+        $candybar = Candybar::where('id', $id)->first();
+        $candybarName = $candybar->name;
+        $candyBarDeleted = $candybar->delete();
 
-        return json_encode("Candybar {$candybarName} was successfully deleted");
+        if($candyBarDeleted) {
+            LogCandybarDeletionJob::dispatch(auth()->user(), $candybarName);
+            return json_encode("Candybar {$candybarName} was successfully deleted");
+        }
+
+        return json_encode('Something went wrong');
     }
 }

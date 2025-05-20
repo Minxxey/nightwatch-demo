@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Candybar;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CandybarSeeder extends Seeder

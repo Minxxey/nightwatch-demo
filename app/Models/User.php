@@ -46,7 +46,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function candbyars() {
+    public function candbyars()
+    {
         return $this->hasMany(Candybar::class);
     }
 }

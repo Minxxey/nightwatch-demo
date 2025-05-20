@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Tag extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'name'
+        'name',
     ];
 
-    public function candybars() : BelongsToMany
+    public function candybars(): BelongsToMany
     {
         return $this->belongsToMany(Candybar::class);
     }

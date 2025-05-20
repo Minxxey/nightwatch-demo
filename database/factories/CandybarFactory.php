@@ -20,7 +20,7 @@ class CandybarFactory extends Factory
             'name' => $this->faker->randomElement(['Snickers', 'Mars', 'Twix', 'Bounty', 'Milky Way', 'Lion', 'KitKat', 'Toffee Crisp', 'Crunch', 'Baby Ruth', 'Butterfinger', 'Almond Joy', '3 Musketeers', 'Reese\'s', 'York']),
             'amount' => $this->faker->randomDigitNotZero(),
             'candybarTreshhold' => $this->faker->randomDigitNotZero(),
-            'isAvailable' => $this->faker->boolean(70)
+            'isAvailable' => $this->faker->boolean(70),
         ];
     }
 }

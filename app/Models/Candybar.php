@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Candybar extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'amount',
         'candybarTreshhold',
-        'isAvailable'
+        'isAvailable',
     ];
 
     public function tags(): BelongsToMany
@@ -22,7 +23,7 @@ class Candybar extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

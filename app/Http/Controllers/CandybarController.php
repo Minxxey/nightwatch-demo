@@ -6,16 +6,46 @@ use App\Exceptions\CandybarAlreadyExistsException;
 use App\Http\Requests\StoreCandybarRequest;
 use App\Http\Requests\UpdateCandybarRequest;
 use App\Jobs\LogCandybarDeletionJob;
+use App\Jobs\NotifyAdminAboutCandybarFailureJob;
 use App\Models\Candybar;
+use Illuminate\Support\Facades\Log;
 
 class CandybarController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of tall candybars with their ratings + tags.
      */
     public function index()
     {
-        return Candybar::all()->toJson();
+        $candybars = Candybar::all();
+
+        foreach ($candybars as $candybar) {
+            $ratings = $candybar->ratings;
+            $tags    = $candybar->tags;
+
+            $avg = $ratings->pluck('score')->avg();
+            $candybar->setAttribute('avg_rating', $avg);
+
+            foreach ($ratings as $rating) {
+                $user = $rating->user;
+                $rating->setAttribute('user_info', [
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email,
+                ]);
+            }
+
+            $candybar->setAttribute('ratings', $ratings);
+            $candybar->setAttribute('tags', $tags);
+        }
+
+        $candybars->load(['ratings.user', 'tags.category']);
+
+        return response()->json($candybars);
+
+        /*$candybars = Candybar::with(['ratings.user'])->get();
+
+        return response()->json($candybars);*/
     }
 
     /**
@@ -24,15 +54,25 @@ class CandybarController extends Controller
     public function store(StoreCandybarRequest $request)
     {
         $validated = $request->validated();
-        $candybar = Candybar::where('name', $validated['name'])->first();
+        $candybar = null;
 
-        if ($candybar) {
-            throw new CandybarAlreadyExistsException("The candybar you're trying to create already exists", 409);
+        try {
+            $candybar = Candybar::create(
+                $validated
+            );
+
+            return response()->json(['id' => $candybar->id], 201);
+
+        } catch (\Exception $e) {
+
+            Log::info("Tried creating new Candybar {$validated['name']}");
+            NotifyAdminAboutCandybarFailureJob::dispatchIf(!empty($validated['name']), $validated['name'], $e->getMessage());
+
+            return response()->json([
+                'message' => 'Failed to create candybar',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-        $candybar = Candybar::create($validated);
-
-        return $candybar->id;
-
     }
 
     /**
@@ -64,7 +104,7 @@ class CandybarController extends Controller
         $candybarName = $candybar->name;
         $candyBarDeleted = $candybar->delete();
 
-        if($candyBarDeleted) {
+        if ($candyBarDeleted) {
             LogCandybarDeletionJob::dispatch(auth()->user(), $candybarName);
             return json_encode("Candybar {$candybarName} was successfully deleted");
         }

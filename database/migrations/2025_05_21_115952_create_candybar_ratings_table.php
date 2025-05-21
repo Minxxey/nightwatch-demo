@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candybars', function (Blueprint $table) {
+        Schema::create('candybar_ratings', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->integer('amount')->nullable();
-            $table->integer('candybarTreshhold')->nullable();
-            $table->boolean('isAvailable');
+            $table->foreignId('candybar_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->tinyInteger('score'); // 1–5 z.B.
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candybars');
+        Schema::dropIfExists('candybar_ratings');
     }
 };

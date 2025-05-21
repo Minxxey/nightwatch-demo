@@ -12,6 +12,6 @@ class CandybarSeeder extends Seeder
      */
     public function run(): void
     {
-        Candybar::factory()->count(10)->create();
+        Candybar::factory()->count(300)->create();
     }
 }

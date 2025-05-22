@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Tag;
 use App\Models\TagCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TagCategorySeeder extends Seeder

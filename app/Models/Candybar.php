@@ -29,7 +29,7 @@ class Candybar extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function ratings() : HasMany
+    public function ratings(): HasMany
     {
         return $this->hasMany(CandybarRating::class);
     }

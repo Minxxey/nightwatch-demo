@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Mail\LowStockAlert;
 use App\Models\Candybar;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
@@ -15,7 +17,7 @@ class LowStockCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'candybar:low-stock-command';
+    protected $signature = 'candybar:low-stock';
 
     /**
      * The console command description.
@@ -29,13 +31,15 @@ class LowStockCommand extends Command
      */
     public function handle()
     {
+        Log::info('Checking for low stock');
+
         $lowStockCandybars = Candybar::whereColumn('amount', '<', 'candybarTreshhold')->get();
 
         if ($lowStockCandybars->isEmpty()) {
             return CommandAlias::SUCCESS;
         }
 
-        $to = 'lstaudt@byte5.de';
+        $to = 'admin@byte5.de';
 
         Mail::to($to)->send(new LowStockAlert($lowStockCandybars->toArray()));
 

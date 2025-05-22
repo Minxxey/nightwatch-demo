@@ -17,6 +17,7 @@ class TagCategoryFactory extends Factory
     public function definition(): array
     {
         $name = fake()->name();
+
         return [
             'name' => ucfirst($name),
             'slug' => \Str::slug($name),

@@ -18,11 +18,12 @@ class CandybarRating extends Model
         'comment',
     ];
 
-    public function candybar() : BelongsTo
+    public function candybar(): BelongsTo
     {
         return $this->belongsTo(Candybar::class);
     }
-    public function user() : BelongsTo
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

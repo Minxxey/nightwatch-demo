@@ -20,7 +20,7 @@ class Tag extends Model
         return $this->belongsToMany(Candybar::class);
     }
 
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(TagCategory::class, 'tag_category_id');
     }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Candybar;
 use App\Models\CandybarRating;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CandybarRatingSeeder extends Seeder

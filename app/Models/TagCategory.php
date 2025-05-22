@@ -17,7 +17,7 @@ class TagCategory extends Model
         'description',
     ];
 
-    public function tags() : HasMany
+    public function tags(): HasMany
     {
         return $this->hasMany(Tag::class);
     }

@@ -19,7 +19,7 @@ class CandybarTagSeeder extends Seeder
         // Assign random tags to each candybar
         foreach (Candybar::all() as $candybar) {
             $candybar->tags()->syncWithoutDetaching(
-                $tagIds->shuffle()->take(rand(3,7))
+                $tagIds->shuffle()->take(rand(3, 7))
             );
         }
     }

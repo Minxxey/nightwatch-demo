@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CandybarAlreadyExistsException;
 use App\Exceptions\CandybarStoreException;
 use App\Http\Requests\StoreCandybarRequest;
 use App\Http\Requests\UpdateCandybarRequest;
 use App\Jobs\LogCandybarDeletionJob;
 use App\Jobs\NotifyAdminAboutCandybarFailureJob;
 use App\Models\Candybar;
-use Illuminate\Support\Facades\Log;
 
 class CandybarController extends Controller
 {
@@ -18,7 +16,7 @@ class CandybarController extends Controller
      */
     public function index()
     {
-        $candybars = Candybar::all();
+       /* $candybars = Candybar::all();
 
         foreach ($candybars as $candybar) {
             $ratings = $candybar->ratings;
@@ -41,11 +39,11 @@ class CandybarController extends Controller
             $candybar->setAttribute('formatted_tags', $tags->pluck('name')->implode(', '));
         }
 
-        return response()->json($candybars);
-
-        /*$candybars = Candybar::with(['ratings.user'])->get();
-
         return response()->json($candybars);*/
+
+        $candybars = Candybar::with(['ratings.user:id,name,email', 'tags'])->get();
+
+        return response()->json($candybars);
     }
 
     /**
@@ -67,8 +65,7 @@ class CandybarController extends Controller
 
             throw new CandybarStoreException($e->getMessage());
             return response()->json([
-                'message' => 'Failed to create candybar',
-                'error' => $e->getMessage(),
+                'message' => 'Failure',
             ], 500);
         }
     }

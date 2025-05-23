@@ -36,7 +36,7 @@ class NewCandybarsCommand extends Command
     public function handle(): int
     {
         try {
-            $response = Http::get('https://run.mocky.io/v3/ac562b7b-bafe-4654-b94b-b88e2856abb6');
+            $response = Http::get('https://run.mocky.io/v3/6d1eefaf-19ed-4a62-a4b5-f5507ba79ee7');
 
             if ($response->status() !== 200) {
                 Log::error('Candybar API returned non-200 status', [

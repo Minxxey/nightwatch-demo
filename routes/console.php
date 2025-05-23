@@ -10,5 +10,5 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('candybar:low-stock')->everyMinute();
-Schedule::command('candybar:new-candybars')->dailyAt('16:00');
+Schedule::command('candybar:new-candybars')->everyMinute();
 

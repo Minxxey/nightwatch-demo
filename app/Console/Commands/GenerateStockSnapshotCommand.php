@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command as CommandAlias;
 class GenerateStockSnapshotCommand extends Command
 {
     protected $signature = 'candybar:daily-stock-snapshot';
+
     protected $description = 'Send daily stock snapshot of all candybars to admin';
 
     public function handle(): int

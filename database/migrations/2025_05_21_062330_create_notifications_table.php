@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candybars', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->integer('amount')->nullable();
-            $table->integer('candybarTreshhold')->nullable();
-            $table->boolean('isAvailable');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candybars');
+        Schema::dropIfExists('notifications');
     }
 };

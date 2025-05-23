@@ -17,7 +17,7 @@ class CandybarFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->randomElement(['Snickers', 'Mars', 'Twix', 'Bounty', 'Milky Way', 'Lion', 'KitKat', 'Toffee Crisp', 'Crunch', 'Baby Ruth', 'Butterfinger', 'Almond Joy', '3 Musketeers', 'Reese\'s', 'York']),
+            'name' => $this->faker->name(),
             'amount' => $this->faker->randomDigitNotZero(),
             'candybarTreshhold' => $this->faker->randomDigitNotZero(),
             'isAvailable' => $this->faker->boolean(70),

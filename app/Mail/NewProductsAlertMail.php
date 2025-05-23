@@ -3,23 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class LowStockAlert extends Mailable
+class NewProductsAlertMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected array $lowStockCandybars;
+    protected array $candybars;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(array $lowStockCandybars)
+    public function __construct(array $candybars)
     {
-        $this->lowStockCandybars = $lowStockCandybars;
+        $this->candybars = $candybars;
     }
 
     /**
@@ -28,7 +29,7 @@ class LowStockAlert extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Low Stock Alert',
+            subject: 'New Products Alert Mail',
         );
     }
 
@@ -38,9 +39,9 @@ class LowStockAlert extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.low-stock',
+            markdown: 'emails.new-candybars',
             with: [
-                'lowStockCandybars' => $this->lowStockCandybars,
+                'candybars' => $this->candybars
             ]
         );
     }

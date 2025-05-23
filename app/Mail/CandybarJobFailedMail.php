@@ -8,18 +8,24 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class LowStockAlert extends Mailable
+class CandybarJobFailedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected array $lowStockCandybars;
+    protected string $candybarName;
+
+    protected string $error;
+
+    protected string $emailSubject;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(array $lowStockCandybars)
+    public function __construct(string $candybarName, string $error, string $subject)
     {
-        $this->lowStockCandybars = $lowStockCandybars;
+        $this->candybarName = $candybarName;
+        $this->error = $error;
+        $this->emailSubject = $subject;
     }
 
     /**
@@ -28,7 +34,7 @@ class LowStockAlert extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Low Stock Alert',
+            subject: $this->emailSubject,
         );
     }
 
@@ -38,9 +44,11 @@ class LowStockAlert extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.low-stock',
+            markdown: 'emails.candybar-failed',
             with: [
-                'lowStockCandybars' => $this->lowStockCandybars,
+                'candybarName' => $this->candybarName,
+                'error' => $this->error,
+                'subject' => $this->emailSubject,
             ]
         );
     }
